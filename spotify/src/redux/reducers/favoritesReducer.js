@@ -1,16 +1,26 @@
-const favoritesInitialState = { likedTracks: [] };
+const favoritesInitialState = {
+  likedTracks: JSON.parse(localStorage.getItem("likedTracks")) || [],
+};
 
 const favoritesReducer = (state = favoritesInitialState, action) => {
   switch (action.type) {
-    case "TOGGLE_FAVORITE":
-      return state.likedTracks.includes(action.payload)
-        ? {
-            ...state,
-            likedTracks: state.likedTracks.filter(
-              (track) => track !== action.payload
-            ),
-          }
-        : { ...state, likedTracks: [...state.likedTracks, action.payload] };
+    case "ADD_FAVORITE":
+      if (state.likedTracks.some((track) => track.id === action.payload.id)) {
+        return state;
+      }
+      const updatedFavorites = [...state.likedTracks, action.payload];
+      localStorage.setItem("likedTracks", JSON.stringify(updatedFavorites));
+
+      return { ...state, likedTracks: updatedFavorites };
+
+    case "REMOVE_FAVORITE":
+      const filteredFavorites = state.likedTracks.filter(
+        (track) => track.id !== action.payload
+      );
+      localStorage.setItem("likedTracks", JSON.stringify(filteredFavorites));
+
+      return { ...state, likedTracks: filteredFavorites };
+
     default:
       return state;
   }

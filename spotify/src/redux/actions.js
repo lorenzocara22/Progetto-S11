@@ -8,7 +8,12 @@ export const setCurrentTrack = (track) => ({
   payload: track,
 });
 
-export const toggleFavorite = (trackId) => ({
-  type: "TOGGLE_FAVORITE",
+export const addFavorite = (track) => ({
+  type: "ADD_FAVORITE",
+  payload: track,
+});
+
+export const removeFavorite = (trackId) => ({
+  type: "REMOVE_FAVORITE",
   payload: trackId,
 });
